@@ -33,6 +33,11 @@
 		color: #457b9d;
 		margin-top: 1.5rem;
 	}
+	h4 {
+		color: #1d3557;
+		margin-top: 1.25rem;
+		margin-bottom: 0.5rem;
+	}
 	.meta {
 		font-size: 0.9rem;
 		color: #666;
@@ -71,6 +76,22 @@
 		border-top: 1px solid #ddd;
 		margin: 2.5rem 0;
 	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1rem 0;
+		font-size: 0.92rem;
+	}
+	th, td {
+		border: 1px solid #ddd;
+		padding: 0.6rem 0.75rem;
+		text-align: left;
+		vertical-align: top;
+	}
+	th {
+		background: #f0f4f8;
+		color: #1d3557;
+	}
 	footer {
 		margin-top: 3rem;
 		padding-top: 1.5rem;
@@ -91,19 +112,21 @@
 <p class="meta">
 	<strong>Application :</strong> Mathéquête<br>
 	<strong>Identifiant Android :</strong> <code>com.coresrdi.mathequete</code><br>
+	<strong>Site web :</strong> <a href="https://mathequete.pages.dev">mathequete.pages.dev</a><br>
 	<strong>Éditeur :</strong> Jeff Gravel (Québec, Canada)<br>
-	<strong>Marque :</strong> coresrdi<br>
-	<strong>Date d'entrée en vigueur :</strong> 12 mai 2026<br>
-	<strong>Dernière mise à jour :</strong> 12 mai 2026
+	<strong>Marque :</strong> CORES RDI / coresrdi<br>
+	<strong>Date d'entrée en vigueur :</strong> 15 mai 2026<br>
+	<strong>Dernière mise à jour :</strong> 15 mai 2026<br>
+	<strong>Version précédente :</strong> 12 mai 2026
 </p>
 
 <div class="highlight">
-	<strong>Résumé en une phrase :</strong> Mathéquête est un jeu éducatif destiné aux enfants qui fonctionne entièrement sur l'appareil. Nous ne collectons, ne stockons et ne transmettons <strong>aucune</strong> donnée personnelle vers nos serveurs.
+	<strong>Résumé en une phrase :</strong> Mathéquête est un jeu éducatif destiné aux enfants qui fonctionne <strong>par défaut entièrement sur l'appareil</strong>. Internet est utilisé uniquement pour activer votre licence achetée, et — <strong>seulement si vous l'avez activé</strong> — pour partager les statistiques de progression de votre enfant avec son prof. Aucune publicité ciblée, aucun profilage, jamais.
 </div>
 
 <h2>1. Qui sommes-nous</h2>
 <p>
-	Mathéquête est développée par <strong>Jeff Gravel</strong>, développeur indépendant établi au Québec, Canada, sous la marque <strong>coresrdi</strong>. Le présent document décrit les pratiques de confidentialité applicables à l'application mobile Mathéquête distribuée sur Google Play Store sous l'identifiant <code>com.coresrdi.mathequete</code>.
+	Mathéquête est développée par <strong>Jeff Gravel</strong>, développeur indépendant établi au Québec, Canada, sous la marque <strong>CORES RDI</strong> (coresrdi). Le présent document décrit les pratiques de confidentialité applicables à l'application mobile Mathéquête distribuée sur Google Play Store sous l'identifiant <code>com.coresrdi.mathequete</code>, à la version Windows/Apple, et au site web <a href="https://mathequete.pages.dev">mathequete.pages.dev</a>.
 </p>
 
 <h2>2. Public visé — application pour enfants</h2>
@@ -122,9 +145,9 @@
 
 <h2>3. Données que l'application collecte</h2>
 
-<h3>3.1 Aucune donnée transmise à nos serveurs</h3>
+<h3>3.1 Données 100 % locales par défaut</h3>
 <p>
-	Mathéquête fonctionne entièrement <strong>en local sur l'appareil</strong>. Les seules données générées par l'utilisation du jeu (profils enfants, progression, scores, choix de personnages, statistiques de jeu) sont stockées exclusivement dans la mémoire interne de l'appareil. Elles ne quittent jamais l'appareil et ne sont jamais envoyées à coresrdi ni à un tiers.
+	Mathéquête fonctionne <strong>par défaut entièrement en local</strong> sur l'appareil. Les données générées par l'utilisation du jeu (profils enfants, progression, scores, choix de personnages, statistiques de jeu) sont stockées dans la mémoire interne de l'appareil. Elles ne quittent l'appareil <strong>que dans les cas précis et opt-in</strong> décrits en §3.4 ci-dessous.
 </p>
 
 <h3>3.2 Données stockées localement</h3>
@@ -133,7 +156,8 @@
 	<li>les <strong>profils d'enfants</strong> créés par le parent (prénom uniquement, optionnel) ;</li>
 	<li>la <strong>progression de jeu</strong> (niveaux complétés, ennemis capturés, récompenses) ;</li>
 	<li>les <strong>préférences</strong> (langue, son, choix de personnage, skins) ;</li>
-	<li>le <strong>statut d'achat Premium</strong> (synchronisé avec Google Play Billing, voir section 5).</li>
+	<li>l'<strong>identifiant école optionnel</strong> (nom du prof + numéro de classe, saisi par le parent dans le profil de l'enfant — voir §3.4) ;</li>
+	<li>le <strong>statut d'achat et le code de licence</strong> (vérifié hors-ligne grâce à une signature cryptographique HMAC-SHA256).</li>
 </ul>
 <p>
 	Ces données sont chiffrées localement à l'aide d'AES-256-CBC avec authentification HMAC-SHA256. Elles peuvent être effacées à tout moment depuis l'écran « Gérer les profils » du jeu, ou en désinstallant l'application.
@@ -144,55 +168,168 @@
 	Mathéquête <strong>n'utilise pas</strong> l'identifiant publicitaire Android (AAID / <code>com.google.android.gms.permission.AD_ID</code>) et ne lit aucun identifiant matériel persistant (IMEI, MAC, etc.).
 </p>
 
+<h3>3.4 Données envoyées via Internet — strictement opt-in</h3>
+<p>
+	Internet est utilisé par Mathéquête dans <strong>trois situations précises</strong>, chacune liée à une action volontaire du parent, du prof ou de l'élève :
+</p>
+
+<h4>A) Activation de licence (1 seule fois, au moment où vous tapez votre code)</h4>
+<p>
+	Lorsque vous activez un code de licence acheté en ligne, l'application envoie au serveur Mathéquête (<code>mathequete-api.coresrdi.workers.dev</code>, hébergé chez Cloudflare) :
+</p>
+<ul>
+	<li>le <strong>code de licence</strong> (ex. <code>MQ-CONT-X7K9-RP2M-8VHD-3NQF</code>) ;</li>
+	<li>un <strong>identifiant anonyme d'appareil</strong> (hash SHA-256 d'un identifiant local non personnel — pas l'IMEI, pas le numéro de téléphone) ;</li>
+	<li>le <strong>système d'exploitation</strong> (Windows, Android, ou Apple) ;</li>
+	<li>un <strong>horodatage UTC</strong>.</li>
+</ul>
+<p>
+	Le serveur répond OK/refus et enregistre l'activation pour limiter le nombre d'appareils actifs par code (1 pour une licence individuelle ou un code du Pack 5, N pour une licence école). Vous pouvez <strong>libérer un appareil</strong> à tout moment depuis le menu Réglages → Licence du jeu, ce qui supprime l'enregistrement côté serveur et permet de réactiver sur un autre appareil.
+</p>
+
+<h4>B) Vérification périodique de licence (transparent, hors-ligne après activation)</h4>
+<p>
+	Une fois activée, la licence est vérifiée <strong>hors-ligne</strong> par signature HMAC sans appel réseau. L'application contacte le serveur uniquement à intervalles espacés (typiquement quelques fois par mois) pour :
+</p>
+<ul>
+	<li>détecter si la licence a été libérée depuis un autre appareil (cas du transfert) ;</li>
+	<li>recevoir les mises à jour de catalogue d'îles bonus annoncées par CORES RDI.</li>
+</ul>
+<p>
+	Aucune donnée personnelle n'est envoyée lors de ces vérifications, seulement le code de licence et l'identifiant anonyme d'appareil.
+</p>
+
+<h4>C) Synchronisation prof (totalement opt-in, le parent ou le prof choisit le mode)</h4>
+<p><strong>Cette synchronisation est désactivée par défaut.</strong> Elle s'active uniquement si :</p>
+<ol>
+	<li>le parent saisit un <strong>nom de prof</strong> et un <strong>numéro de classe</strong> dans le profil de l'enfant (section « Identifiant pour l'école »), <strong>et</strong></li>
+	<li>l'utilisateur choisit l'un des trois modes de synchronisation suivants :
+		<ul>
+			<li><strong>Mode 1 — Automatique</strong> : une fois à chaque ouverture du jeu, en arrière-plan ;</li>
+			<li><strong>Mode 2 — Sur demande</strong> : une fenêtre demande la permission à chaque ouverture ;</li>
+			<li><strong>Mode 3 — Manuel</strong> : aucune synchronisation automatique, le parent ou l'élève appuie sur un bouton « 🔄 » pour déclencher l'envoi.</li>
+		</ul>
+	</li>
+</ol>
+<p>Lorsqu'une synchronisation prof est déclenchée, l'application envoie au serveur :</p>
+<ul>
+	<li>un <strong>identifiant global de l'élève</strong> = prénom + initiale du nom + année de naissance (saisis par le parent, jamais le nom complet ni la date complète) ;</li>
+	<li>le <strong>nom du prof</strong> et le <strong>numéro de classe</strong> saisis par le parent ;</li>
+	<li>des <strong>statistiques agrégées de progression</strong> : nombre d'épreuves complétées par île, taux de réussite par opération mathématique (addition, soustraction, etc.), temps moyen de réponse, points faibles détectés ;</li>
+	<li><strong>aucune</strong> capture d'écran, aucun enregistrement vocal, aucune position GPS, aucune information sur les autres applications de l'appareil.</li>
+</ul>
+<p>
+	Le prof peut consulter ces statistiques agrégées dans son tableau de bord (application Mathéquête Prof) pour adapter ses cours. Le parent peut <strong>désactiver à tout moment</strong> la synchronisation (passer en Mode 3 manuel ou retirer le nom du prof), ce qui efface l'identifiant école côté appareil et stoppe les envois.
+</p>
+
 <h2>4. Permissions Android demandées</h2>
 
 <h3>4.1 Permission CAMERA (<code>android.permission.CAMERA</code>)</h3>
 <div class="highlight">
-	<strong>Usage exclusif :</strong> L'application utilise la caméra de l'appareil <strong>uniquement</strong> pour scanner des codes QR localement. <strong>Aucune</strong> image, vidéo ou flux vidéo n'est enregistré, stocké ou transmis. Le contenu lu du QR code est traité localement et n'est pas envoyé à un serveur.
+	<strong>Usage exclusif :</strong> L'application utilise la caméra de l'appareil <strong>uniquement</strong> pour scanner des codes QR localement (codes prof ou codes promo). <strong>Aucune</strong> image, vidéo ou flux vidéo n'est enregistré, stocké ou transmis. Le contenu lu du QR code est traité localement.
 </div>
 <p>
 	La permission caméra est demandée au moment où l'enfant active la fonctionnalité de scan QR (et non au démarrage de l'application). Elle peut être refusée ou révoquée à tout moment depuis les paramètres Android, sans empêcher le reste du jeu de fonctionner.
 </p>
 
-<h3>4.2 Permission ACCÈS INTERNET</h3>
+<h3>4.2 Permission ACCÈS INTERNET (<code>android.permission.INTERNET</code>)</h3>
 <p>
-	L'application demande la permission Internet uniquement pour communiquer avec les serveurs de <strong>Google Play Billing</strong> (validation des achats intégrés). Aucune autre communication réseau n'est effectuée par Mathéquête.
+	L'application demande la permission Internet pour <strong>quatre usages strictement limités</strong> :
+</p>
+<ol>
+	<li><strong>Validation des achats Google Play Billing</strong> (achats intégrés Android) ;</li>
+	<li><strong>Activation de licence</strong> auprès du serveur Mathéquête chez Cloudflare (voir §3.4-A) ;</li>
+	<li><strong>Vérification périodique de licence</strong> + mises à jour de catalogue (voir §3.4-B) ;</li>
+	<li><strong>Synchronisation prof — opt-in uniquement</strong> (voir §3.4-C).</li>
+</ol>
+<p>
+	Aucune autre communication réseau n'est effectuée par Mathéquête. Si vous bloquez l'accès Internet à l'application dans les paramètres Android, le jeu reste pleinement fonctionnel après une première activation — seules les synchronisations prof et les mises à jour de catalogue sont désactivées.
 </p>
 
-<h2>5. Achats intégrés (Google Play Billing)</h2>
-<p>
-	Mathéquête propose un achat unique non consommable : <strong>Mathéquête Premium</strong> (identifiant produit : <code>mathequete_premium</code>). Cet achat débloque du contenu supplémentaire dans le jeu.
-</p>
-<p>Les transactions d'achat :</p>
+<h2>5. Achats — Stripe et Google Play Billing</h2>
+<p>Mathéquête propose deux canaux d'achat selon votre plateforme :</p>
+
+<h3>5.1 Achats sur le site web mathequete.pages.dev (PC, ou Android via navigateur)</h3>
+<p>Les paiements sont traités par <strong>Stripe Inc.</strong> (États-Unis). Lors d'un achat :</p>
 <ul>
-	<li>sont gérées exclusivement par <strong>Google Play Billing</strong> ;</li>
-	<li>nous ne voyons jamais les informations de paiement (carte de crédit, etc.) ;</li>
-	<li>seul un jeton de confirmation d'achat (token) transite, vérifié localement sur l'appareil ;</li>
+	<li>vous saisissez vos informations de paiement <strong>directement sur le site Stripe Checkout</strong> — Mathéquête / CORES RDI ne voit jamais votre numéro de carte de crédit ;</li>
+	<li>Stripe nous transmet uniquement votre <strong>adresse courriel</strong> (pour l'envoi du code de licence) et votre <strong>nom</strong> (facultatif, pour le reçu) ;</li>
+	<li>les taxes québécoises (TPS 5 %, TVQ 9,975 %) sont calculées et collectées automatiquement par Stripe Tax.</li>
+</ul>
+<p>
+	Politique de confidentialité Stripe : <a href="https://stripe.com/privacy" rel="noopener noreferrer" target="_blank">stripe.com/privacy</a>.
+</p>
+<p>
+	Une fois le paiement confirmé, votre code de licence est envoyé par courriel via <strong>Resend</strong> (service d'envoi transactionnel basé aux États-Unis). Politique : <a href="https://resend.com/legal/privacy-policy" rel="noopener noreferrer" target="_blank">resend.com/legal/privacy-policy</a>.
+</p>
+
+<h3>5.2 Achats intégrés Android (Google Play Billing)</h3>
+<p>Pour les achats effectués depuis l'application Android :</p>
+<ul>
+	<li>les transactions sont gérées exclusivement par <strong>Google Play Billing</strong> ;</li>
+	<li>nous ne voyons jamais les informations de paiement ;</li>
 	<li>conformément à la politique Play Family, tout achat doit être autorisé par un parent via le contrôle parental Google Play.</li>
 </ul>
 
 <h2>6. Partage avec des tiers</h2>
 <p>
-	Nous ne vendons, ne louons et ne partageons <strong>aucune</strong> donnée d'utilisateur avec des tiers. Les seuls tiers techniquement impliqués sont :
+	Nous ne vendons, ne louons et ne partageons <strong>aucune</strong> donnée d'utilisateur à des fins marketing. Les tiers techniquement impliqués dans le fonctionnement de Mathéquête sont :
 </p>
-<ul>
-	<li><strong>Google Play Services</strong> — pour la distribution de l'application et le traitement des achats intégrés. Voir la <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">politique de confidentialité Google</a>.</li>
-</ul>
+<table>
+	<thead>
+		<tr>
+			<th>Tiers</th>
+			<th>Rôle</th>
+			<th>Données concernées</th>
+			<th>Politique</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><strong>Cloudflare, Inc.</strong></td>
+			<td>Hébergement du site (Pages), du serveur d'activation (Workers) et de la base de données (D1)</td>
+			<td>Codes de licence, identifiants anonymes d'appareils, identifiants école opt-in, statistiques agrégées de progression</td>
+			<td><a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer" target="_blank">cloudflare.com/privacypolicy</a></td>
+		</tr>
+		<tr>
+			<td><strong>Stripe, Inc.</strong></td>
+			<td>Traitement des paiements (site web uniquement)</td>
+			<td>Courriel, nom (facultatif), informations de paiement (jamais visibles par CORES RDI)</td>
+			<td><a href="https://stripe.com/privacy" rel="noopener noreferrer" target="_blank">stripe.com/privacy</a></td>
+		</tr>
+		<tr>
+			<td><strong>Resend, Inc.</strong></td>
+			<td>Envoi du courriel transactionnel contenant le code de licence</td>
+			<td>Courriel, code de licence acheté</td>
+			<td><a href="https://resend.com/legal/privacy-policy" rel="noopener noreferrer" target="_blank">resend.com/legal/privacy-policy</a></td>
+		</tr>
+		<tr>
+			<td><strong>Google LLC (Play Services)</strong></td>
+			<td>Distribution Android, achats intégrés</td>
+			<td>Token d'achat (sans information de carte)</td>
+			<td><a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">policies.google.com/privacy</a></td>
+		</tr>
+	</tbody>
+</table>
 <p>Aucun SDK d'analytique tiers (Google Analytics, Firebase Analytics, Facebook SDK, Unity Ads, AdMob, etc.) n'est intégré à l'application.</p>
 
 <h2>7. Sécurité</h2>
 <p>
-	Les données stockées localement sur l'appareil sont chiffrées (AES-256-CBC + HMAC-SHA256). Toute communication réseau effectuée par l'application (uniquement vers Google Play Billing) est protégée par TLS / HTTPS. Comme aucune donnée ne quitte l'appareil vers nos serveurs, le risque de fuite de données par notre faute est nul.
+	Les données stockées localement sur l'appareil sont chiffrées (AES-256-CBC + HMAC-SHA256). Toute communication réseau effectuée par l'application est protégée par TLS / HTTPS. Les codes de licence sont signés cryptographiquement (HMAC-SHA256 avec une clé secrète de 256 bits détenue uniquement par CORES RDI), ce qui permet leur vérification <strong>hors-ligne</strong> sans appel réseau.
+</p>
+<p>
+	Le serveur d'activation Cloudflare Workers est hébergé sur l'infrastructure de Cloudflare, certifiée ISO 27001 / SOC 2. La base de données D1 est répliquée géographiquement et chiffrée au repos.
 </p>
 
 <h2>8. Droits des utilisateurs et des parents</h2>
 <p>Conformément au RGPD, à la Loi 25 du Québec et à la COPPA, vous (et le parent/tuteur légal d'un enfant utilisateur) disposez des droits suivants :</p>
 <ul>
-	<li><strong>Droit d'accès</strong> : toutes les données du jeu sont visibles dans l'écran « Gérer les profils ».</li>
-	<li><strong>Droit de rectification</strong> : les profils, prénoms et préférences sont modifiables à tout moment dans le jeu.</li>
-	<li><strong>Droit à l'effacement</strong> : suppression d'un profil dans « Gérer les profils », ou désinstallation de l'application pour tout effacer.</li>
-	<li><strong>Droit à la portabilité</strong> : sur demande au courriel ci-dessous, nous expliquons comment exporter les données locales.</li>
-	<li><strong>Droit d'opposition</strong> : aucune donnée n'étant traitée pour profilage, ce droit s'exerce automatiquement.</li>
+	<li><strong>Droit d'accès</strong> : toutes les données du jeu sont visibles dans l'écran « Gérer les profils ». Pour obtenir une copie des données stockées côté serveur (activations de licence, statistiques prof synchronisées), écrivez à <a href="mailto:coresrdi@gmail.com">coresrdi@gmail.com</a>.</li>
+	<li><strong>Droit de rectification</strong> : les profils, prénoms, identifiants école et préférences sont modifiables à tout moment dans le jeu.</li>
+	<li><strong>Droit à l'effacement</strong> : suppression d'un profil dans « Gérer les profils », désinstallation de l'application, ou demande écrite à <a href="mailto:coresrdi@gmail.com">coresrdi@gmail.com</a> pour effacer les statistiques côté serveur.</li>
+	<li><strong>Droit à la portabilité</strong> : sur demande, nous exportons vos données dans un format machine (JSON ou CSV).</li>
+	<li><strong>Droit d'opposition</strong> : la synchronisation prof est opt-in et désactivable à tout moment. Aucune donnée n'est jamais utilisée pour du profilage publicitaire.</li>
+	<li><strong>Droit de retrait du consentement</strong> : pour la synchronisation prof, sélectionner « Mode 3 — Manuel » et ne plus déclencher manuellement l'envoi, ou retirer le nom du prof dans le profil de l'enfant.</li>
 </ul>
 <p>Pour exercer ces droits ou poser toute question relative à la confidentialité :</p>
 
@@ -202,26 +339,35 @@
 </div>
 
 <h2>9. Conservation des données</h2>
-<p>
-	Les données stockées localement sont conservées tant que l'application est installée sur l'appareil. Elles sont automatiquement supprimées :
-</p>
+<p><strong>Localement (sur l'appareil)</strong> : tant que l'application est installée. Effacement automatique lors de la désinstallation ou de la suppression d'un profil.</p>
+<p><strong>Côté serveur Cloudflare</strong> :</p>
 <ul>
-	<li>lors de la suppression manuelle d'un profil enfant ;</li>
-	<li>lors de la désinstallation de l'application ;</li>
-	<li>lors d'un effacement des données via les paramètres Android (<em>Applications → Mathéquête → Stockage → Effacer les données</em>).</li>
+	<li><strong>Activations de licence</strong> : conservées tant que la licence est valide (à vie pour individuelle/Pack 5, 12 mois pour les licences école).</li>
+	<li><strong>Statistiques prof synchronisées</strong> : conservées <strong>1 année scolaire</strong> (10 mois) puis automatiquement archivées et anonymisées.</li>
+	<li><strong>Données d'achat Stripe (factures)</strong> : conservées <strong>7 ans</strong> conformément aux obligations comptables de Revenu Québec / ARC.</li>
+	<li><strong>Courriels envoyés via Resend</strong> : conservés 30 jours pour audit, puis effacés.</li>
 </ul>
 
 <h2>10. Transferts internationaux</h2>
+<p>Mathéquête utilise des services hébergés hors du Canada pour certaines fonctions :</p>
+<ul>
+	<li><strong>Cloudflare</strong> opère un réseau mondial de datacenters. Les données du serveur Mathéquête peuvent transiter ou être traitées dans des datacenters situés aux États-Unis, en Europe ou ailleurs. Cloudflare adhère aux <strong>Clauses Contractuelles Types de l'UE</strong> (CCT) et au <strong>Data Privacy Framework UE-US</strong> pour les transferts hors UE.</li>
+	<li><strong>Stripe</strong> traite les paiements aux États-Unis. Stripe adhère aux mêmes cadres légaux (CCT, DPF).</li>
+	<li><strong>Resend</strong> envoie les courriels depuis les États-Unis.</li>
+</ul>
 <p>
-	Aucun transfert international de données utilisateur n'est effectué par Mathéquête, puisque aucune donnée ne quitte l'appareil de l'utilisateur. Les seules communications (vers Google Play Billing) sont régies par la politique Google.
+	Conformément au RGPD article 46 et à la Loi 25 du Québec, ces transferts s'appuient sur des <strong>garanties contractuelles</strong> (Standard Contractual Clauses) qui imposent un niveau de protection équivalent au droit européen / québécois.
 </p>
 
 <h2>11. Modifications de la présente politique</h2>
+<p>Tout changement substantiel (par exemple l'ajout d'une nouvelle catégorie de données collectées) sera signalé par :</p>
+<ul>
+	<li>une mise à jour de la date « Dernière mise à jour » en haut du document ;</li>
+	<li>un courriel à l'adresse associée à votre licence Stripe, si applicable ;</li>
+	<li>une annonce sur le site <a href="https://mathequete.pages.dev">mathequete.pages.dev</a>.</li>
+</ul>
 <p>
-	Nous pouvons mettre à jour cette politique de confidentialité, notamment pour refléter des changements légaux ou des évolutions de l'application. La date de « dernière mise à jour » en haut du document indique la version en vigueur. L'historique complet des modifications est public sur <a href="https://github.com/coresrdi/mathequete-privacy" rel="noopener noreferrer" target="_blank">notre dépôt GitHub</a>.
-</p>
-<p>
-	Tout changement substantiel sera signalé aux utilisateurs par une mise à jour de l'application ou un message à l'ouverture du jeu.
+	L'historique complet des modifications est public sur <a href="https://github.com/coresrdi/mathequete-privacy" rel="noopener noreferrer" target="_blank">notre dépôt GitHub coresrdi/mathequete-privacy</a>.
 </p>
 
 <h2>12. Loi applicable</h2>
@@ -232,7 +378,7 @@
 <hr>
 
 <footer>
-	© 2026 Jeff Gravel — coresrdi. Tous droits réservés.<br>
+	© 2026 Jeff Gravel — CORES RDI. Tous droits réservés.<br>
 	<a href="https://github.com/coresrdi/mathequete-privacy">Code source de cette politique sur GitHub</a> ·
 	<a href="en/">English version</a>
 </footer>
